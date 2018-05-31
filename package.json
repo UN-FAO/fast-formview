@@ -1,6 +1,6 @@
 {
   "name": "fast-formview",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "FAST Form Viewer",
   "author": "Alfredo Irarrazaval",
   "private": true,
@@ -11,7 +11,7 @@
     "test": "npm run unit",
     "lint": "eslint --ext .js,.vue src test/unit",
     "build": "node build/build.js",
-    "deploy": "cp ./CNAME ./dist/CNAME && surge ./dist"
+    "surge": "cp ./CNAME ./dist/CNAME && surge ./dist"
   },
   "dependencies": {
     "formiojs": "^3.0.0-rc.5",
