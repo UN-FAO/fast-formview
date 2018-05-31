@@ -14,7 +14,7 @@
     "deploy": "cp ./CNAME ./dist/CNAME && surge ./dist"
   },
   "dependencies": {
-    "formiojs": "^3.0.0-rc.4",
+    "formiojs": "^3.0.0-rc.5",
     "vue": "^2.5.2",
     "vue-formio": "^1.0.1",
     "vue-router": "^3.0.1"
