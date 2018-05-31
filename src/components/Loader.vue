@@ -1,0 +1,41 @@
+<template>
+  <div style="position:relative;height:200px">
+    <div class="loader-wrapper">
+      <div class="loader"></div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'AppLoader',
+};
+</script>
+
+<style lang="scss" scoped>
+.loader-wrapper {
+  position:absolute;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+}
+
+.loader {
+  position:absolute;
+  left: 50%;
+  top: 50%;
+  margin-left: -30px;
+  margin-top: -30px;
+  z-index: 10000;
+  display: inline-block;
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #3498db;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); }}
+</style>
