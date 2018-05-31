@@ -1,6 +1,5 @@
 <template>
   <section class="formview">
-    <AppHeader v-if="showHeader"></AppHeader>
     <div class="container">
       <AppLoader v-if="!ready"></AppLoader>
       <div v-if="!submitted" id="formio"></div>
@@ -87,6 +86,10 @@ export default {
         form.on('submit', (submission) => {
           this.onSubmit(submission);
         });
+        // TODO: Register the error event to handle input errors
+        // form.on('error', (errors) => {
+        //   this.onError(errors);
+        // });
         // Save the FormioForm instance and tell the application we are ready to show the form
         this.form = form;
         this.ready = true;
@@ -140,8 +143,27 @@ export default {
 </script>
 
 
-<style lang="scss" scoped>
+<style lang="scss">
 .alert-success {
   margin-top: 50px;
+}
+
+.formio-component.has-error,
+.formio-component.has-feedback {
+  background-color: inherit;
+  border: none;
+  padding: 0;
+}
+
+.formio-component > label[style*="float: left;"] ~ .formio-errors {
+  text-align: right;
+}
+
+.formio-component > label[style*="float: right;"] ~ .formio-errors {
+  text-align: left;
+}
+
+#formio > div > .alert-danger:first-child {
+  display: none !important;
 }
 </style>
