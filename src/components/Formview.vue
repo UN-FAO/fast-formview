@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { Formio } from 'formiojs';
+import { Formio, createForm } from 'formiojs';
 import Translations from '@/mixins/Translations';
 import LoaderComponent from './Loader';
 
@@ -81,7 +81,7 @@ export default {
         }
       }
       // Create and render the Form.io form with the provided options
-      Formio.createForm(document.getElementById('formio'), this.formUrl, this.options).then((form) => {
+      createForm(document.getElementById('formio'), this.formUrl, this.options).then((form) => {
         // Register the submit event to display the submit message
         form.on('submit', (submission) => {
           this.onSubmit(submission);
