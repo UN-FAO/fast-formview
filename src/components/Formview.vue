@@ -92,6 +92,7 @@ export default {
         // });
         // Save the FormioForm instance and tell the application we are ready to show the form
         this.form = form;
+        this.form.language = this.lang;
         this.ready = true;
       }).catch((err) => {
         // If the form could not be render, treat it as a 404 error
