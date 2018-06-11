@@ -80,6 +80,12 @@ export default {
           this.submitMessage = this.options.i18n[this.lang].submit_message;
         }
       }
+      if (this.hideNav) {
+        this.options.buttonSettings = {
+          showNext: false,
+          showPrevious: false,
+        };
+      }
       // Create and render the Form.io form with the provided options
       createForm(document.getElementById('formio'), this.formUrl, this.options).then((form) => {
         // Register the submit event to display the submit message
@@ -137,6 +143,9 @@ export default {
    */
     lang() {
       return this.$route.query.lang || 'en';
+    },
+    hideNav() {
+      return this.$route.query.nav === '0';
     },
   },
 };
