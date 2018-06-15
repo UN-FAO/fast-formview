@@ -193,6 +193,7 @@ export default {
       this.fixSurveysResponsive();
       this.fixPanelsHeading();
       this.fixFlatpickrCalendar();
+      this.fixSelectBoxesFloats();
     },
     fixSurveysResponsive() {
       this.form.element.querySelectorAll('.formio-component-survey').forEach((el) => {
@@ -216,6 +217,22 @@ export default {
           header.innerText = this.options.i18n.resources[this.language].translation[component.component.title] || component.component.title;
           /* eslint-enable max-len */
           component.element.insertBefore(header, body);
+        }
+      });
+    },
+    fixSelectBoxesFloats() {
+      this.form.element.querySelectorAll('.formio-component-selectboxes').forEach((el) => {
+        const label = el.querySelector('label');
+        const list = el.querySelector('.form-group');
+        if (label && label.style.float) {
+          const width = parseInt(label.style.width.replace('%', ''), 10);
+          let margin = 0;
+          if (label.style.float === 'left') {
+            margin = parseInt(label.style['margin-right'].replace('%', ''), 10);
+          } else if (label.style.float === 'right') {
+            margin = parseInt(label.style['margin-left'].replace('%', ''), 10);
+          }
+          list.style['margin-left'] = (width + margin).toString().concat('%');
         }
       });
     },
