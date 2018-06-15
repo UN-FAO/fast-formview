@@ -73,7 +73,6 @@ export default {
         this.previousLanguage = _clone(this.currentLanguage);
         this.currentLanguage = language;
         this.updateDirection();
-        this.fixFlatpickrCalendar();
         this.$emit('languageChanged', this.currentLanguage);
       }
       if (event) {
@@ -88,12 +87,6 @@ export default {
         return local ? language.localName : language.name;
       }
       return code;
-    },
-    fixFlatpickrCalendar() {
-      const elements = document.getElementsByClassName('flatpickr-calendar');
-      while (elements.length > 1) {
-        elements[0].remove();
-      }
     },
     updateDirection() {
       this.element.setAttribute('dir', this.currentLanguage.direction);
