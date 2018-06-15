@@ -1,0 +1,26 @@
+{
+  "ar": {
+    "title": "الصفحة المطلوبة غير موجودة",
+    "body": "عذراً و لكن يبدو أن الصفحة التي طلبتها قد تغير عنوانها أو غير موجودة."
+  },
+  "en": {
+    "title": "Page not found",
+    "body": "The page you are looking for has either been moved or no longer exists."
+  },
+  "es": {
+    "title": "Página no encontrada",
+    "body": "La página a la que intenta acceder ha sido cambiada de lugar o no existe."
+  },
+  "fr": {
+    "title": "Page non trouvée",
+    "body": "Nous sommes désolés, la page que vous cherchez a été déplacée ou peut-être effacée."
+  },
+  "ru": {
+    "title": "Страница не найдена",
+    "body": "Запрошенная страница была перемещена или удалена."
+  },
+  "zn": {
+    "title": "网页未找到",
+    "body": "您正在寻找的网页或者被移除或者不再存在。"
+  }
+}

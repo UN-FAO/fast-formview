@@ -1,0 +1,26 @@
+{
+  "ar": {
+      "body": "غير مصرح لك بتقديم.",
+      "title": "غير مصرح"
+  },
+  "en": {
+      "body": "You are not authorized to submit.",
+      "title": "Unauthorized"
+  },
+  "es": {
+      "body": "Usted no está autorizado para enviar.",
+      "title": "No autorizado"
+  },
+  "fr": {
+      "body": "Vous n'êtes pas autorisé à soumettre.",
+      "title": "Non autorisé"
+  },
+  "ru": {
+      "body": "Вы не авторизованы.",
+      "title": "неразрешенный"
+  },
+  "zn": {
+      "body": "您无权提交。",
+      "title": "擅自"
+  }
+}
