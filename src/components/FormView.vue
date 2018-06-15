@@ -127,7 +127,7 @@ export default {
     },
     onLanguageChanged(lang) {
       this.language = lang.code;
-      this.fixResponsiveSurveys();
+      this.runFixes();
     },
     getTranslations(language, limit = 100, skip = 0) {
       return new Promise((resolve, reject) => {
@@ -189,7 +189,12 @@ export default {
           });
       });
     },
-    fixResponsiveSurveys() {
+    runFixes() {
+      this.fixSurveysResponsive();
+      this.fixPanelsHeading();
+      this.fixFlatpickrCalendar();
+    },
+    fixSurveysResponsive() {
       this.form.element.querySelectorAll('.formio-component-survey').forEach((el) => {
         const table = el.querySelector('table');
         if (table) {
@@ -198,6 +203,35 @@ export default {
           wrapper.className = 'table-responsive';
           parent.insertBefore(wrapper, table);
           wrapper.appendChild(table);
+        }
+      });
+    },
+    fixPanelsHeading() {
+      this.eachComponent(this.form.components, (component) => {
+        if (component.component.type === 'panel') {
+          const header = document.createElement('div');
+          const body = component.element.querySelector('.card-body');
+          header.className = 'card-header panel-heading';
+          /* eslint-disable max-len */
+          header.innerText = this.options.i18n.resources[this.language].translation[component.component.title] || component.component.title;
+          /* eslint-enable max-len */
+          component.element.insertBefore(header, body);
+        }
+      });
+    },
+    fixFlatpickrCalendar() {
+      const elements = document.getElementsByClassName('flatpickr-calendar');
+      while (elements.length > 1) {
+        elements[0].remove();
+      }
+    },
+    eachComponent(components, callback) {
+      _forEach(components, (component) => {
+        if (typeof callback === 'function') {
+          callback(component);
+          if (!_isEmpty(component.components)) {
+            this.eachComponent(component.components, callback);
+          }
         }
       });
     },
