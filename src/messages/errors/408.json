@@ -1,0 +1,26 @@
+{
+  "ar": {
+    "title": "وقت الانتظار المفرط",
+    "body": "يبدو أن الطلب يستغرق وقتًا أطول من المتوقع. الرجاء معاودة المحاولة في وقت لاحق."
+  },
+  "en": {
+    "title": "Timeout exceeded",
+    "body": "It seems the request is taking longer than expected.  Please try again later."
+  },
+  "es": {
+    "title": "Tiempo de espera excedido",
+    "body": "Parece que la solicitud está tomando más tiempo de lo esperado. Por favor, inténtelo de nuevo más tarde."
+  },
+  "fr": {
+    "title": "Temps d'attente excessif",
+    "body": "Il semble que la demande prenne plus de temps que prévu. Veuillez réessayer plus tard.."
+  },
+  "ru": {
+    "title": "Чрезмерное время ожидания",
+    "body": "Похоже, что запрос занимает больше времени, чем ожидалось. Пожалуйста, повторите попытку позже."
+  },
+  "zn": {
+    "title": "等待时间过长",
+    "body": "看起来这个请求花的时间比预期的要长。 请稍后再试。"
+  }
+}
