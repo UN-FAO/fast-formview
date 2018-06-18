@@ -2,6 +2,7 @@
   <section class="app-formview">
 
     <app-header
+      v-if="showHeader"
       :lang="language">
     </app-header>
 
@@ -14,21 +15,16 @@
       <app-language-picker
         v-if="rendered"
         :form="form"
-        :language="options.language"
+        :language="language"
         :languages="languages"
         @languageChanged="onLanguageChanged">
       </app-language-picker>
 
-      <formio-form
-        v-if="ready && !submitted"
+      <div
+        ref="formio"
+        v-if="!submitted"
         v-show="rendered"
-        :src="src"
-        :options="options"
-        @render="onRender"
-        @change="onChange"
-        @submit="onSubmit"
-        @error="onError"
-      ></formio-form>
+      ></div>
 
       <app-message
         v-if="submitted"
@@ -40,7 +36,7 @@
 </template>
 
 <script>
-import { Form as FormioFormComponent } from 'vue-formio';
+import { Formio, createForm } from 'formiojs';
 
 import _isEmpty from 'lodash/isEmpty';
 import _forEach from 'lodash/forEach';
@@ -54,7 +50,6 @@ import MessageComponent from './Message';
 export default {
   name: 'app-formview',
   components: {
-    'formio-form': FormioFormComponent,
     'app-header': HeaderComponent,
     'app-spinner': SpinnerComponent,
     'app-language-picker': LanguagePickerComponent,
@@ -75,12 +70,11 @@ export default {
       },
       submitted: false,
       form: {},
-      formId: '',
       language: 'en',
       languages: ['en'],
       messages: {},
       errors: [],
-      timeout: 5000,
+      timeout: 10000,
     };
   },
   computed: {
@@ -88,25 +82,16 @@ export default {
       return this.encodedUrl ? atob(this.encodedUrl) : `https://${this.machine}.form.io/${this.formPath}`;
     },
     projectUrl() {
-      return (new this.$formio(this.src)).projectUrl;
+      return (new Formio(this.src)).projectUrl;
     },
     message() {
       return this.messages[this.language] || this.$messages.submitted[this.language];
     },
+    showHeader() {
+      return this.$route.query.header !== '0';
+    },
   },
   methods: {
-    onChange() {
-      // console.log(e);
-    },
-    onRender() {
-      this.rendered = true;
-      if (!_isEmpty(this.$formio.forms)) {
-        this.formId = Object.keys(this.$formio.forms)[0];
-        this.form = this.$formio.forms[this.formId];
-        this.form.language = this.language;
-        this.$formio.forms = {};
-      }
-    },
     onSubmit() {
       this.submitted = true;
     },
@@ -117,7 +102,7 @@ export default {
         if (!error.component && error.message.toLowerCase() === 'unauthorized') {
           this.$router.push({
             name: 'error',
-            params: { error, url: this.src, type: 'unauthorized' },
+            params: { error, url: this.src, code: 401 },
             query: this.$route.query,
           });
           return false;
@@ -130,13 +115,13 @@ export default {
       this.runFixes();
     },
     getTranslations(language, limit = 100, skip = 0) {
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         let translations = {};
         let messages = {};
         const select = language ? `data.label,data.${language}` : 'data';
         const filter = `?limit=${limit}&skip=${skip}&select=${select}`;
 
-        this.$formio.request(`${this.projectUrl}/translations/submission${filter}`, 'get', null, null, { getHeaders: true })
+        Formio.request(`${this.projectUrl}/translations/submission${filter}`, 'get', null, null, { getHeaders: true })
           .then(async (response) => {
             const data = response.result || [];
             const headers = response.headers || {};
@@ -185,71 +170,50 @@ export default {
             resolve({ messages, translations });
           })
           .catch((error) => {
-            reject(error);
+            resolve({ error });
           });
       });
     },
     runFixes() {
       this.fixSurveysResponsive();
-      this.fixPanelsHeading();
-      this.fixFlatpickrCalendar();
-      this.fixSelectBoxesFloats();
     },
     fixSurveysResponsive() {
-      this.form.element.querySelectorAll('.formio-component-survey').forEach((el) => {
-        const table = el.querySelector('table');
-        if (table) {
-          const parent = table.parentNode;
-          const wrapper = document.createElement('div');
-          wrapper.className = 'table-responsive';
-          parent.insertBefore(wrapper, table);
-          wrapper.appendChild(table);
-        }
-      });
-    },
-    fixPanelsHeading() {
-      this.eachComponent(this.form.components, (component) => {
-        if (component.component.type === 'panel') {
-          const header = document.createElement('div');
-          const body = component.element.querySelector('.card-body');
-          header.className = 'card-header panel-heading';
-          /* eslint-disable max-len */
-          header.innerText = this.options.i18n.resources[this.language].translation[component.component.title] || component.component.title;
-          /* eslint-enable max-len */
-          component.element.insertBefore(header, body);
-        }
-      });
-    },
-    fixSelectBoxesFloats() {
-      this.form.element.querySelectorAll('.formio-component-selectboxes').forEach((el) => {
-        const label = el.querySelector('label');
-        const list = el.querySelector('.form-group');
-        if (label && label.style.float) {
-          const width = parseInt(label.style.width.replace('%', ''), 10);
-          let margin = 0;
-          if (label.style.float === 'left') {
-            margin = parseInt(label.style['margin-right'].replace('%', ''), 10);
-          } else if (label.style.float === 'right') {
-            margin = parseInt(label.style['margin-left'].replace('%', ''), 10);
-          }
-          list.style['margin-left'] = (width + margin).toString().concat('%');
-        }
-      });
-    },
-    fixFlatpickrCalendar() {
-      const elements = document.getElementsByClassName('flatpickr-calendar');
-      while (elements.length > 1) {
-        elements[0].remove();
-      }
-    },
-    eachComponent(components, callback) {
-      _forEach(components, (component) => {
-        if (typeof callback === 'function') {
-          callback(component);
-          if (!_isEmpty(component.components)) {
-            this.eachComponent(component.components, callback);
+      _forEach(this.form.element.querySelectorAll('.formio-component-survey'), (el) => {
+        if (el) {
+          const table = el.querySelector('table');
+          if (table) {
+            const parent = table.parentNode;
+            const wrapper = document.createElement('div');
+            wrapper.className = 'table-responsive';
+            parent.insertBefore(wrapper, table);
+            wrapper.appendChild(table);
           }
         }
+      });
+    },
+    initializeForm(options) {
+      this.form = {};
+      this.ready = false;
+      this.rendered = false;
+
+      return createForm(this.$refs.formio, this.src, options).then((form) => {
+        this.form = form;
+        this.form.on('submit', this.onSubmit);
+        this.form.on('render', () => {
+          this.rendered = true;
+        });
+        this.form.on('error', this.onError);
+        this.ready = true;
+        return this.form.render();
+      }).catch((error) => {
+        /* eslint-disable no-console */
+        console.warn('could not initialize form: ', error);
+        /* eslint-enable no-console */
+        this.$router.push({
+          name: 'error',
+          params: { error, url: this.src, code: 400 },
+          query: this.$route.query,
+        });
       });
     },
   },
@@ -275,7 +239,7 @@ export default {
         if (!_isEmpty(data.messages)) {
           this.messages = data.messages;
         }
-        this.ready = true;
+        this.initializeForm(this.options);
       })
       .catch((error) => {
         this.ready = true;
@@ -288,7 +252,7 @@ export default {
           if (!this.rendered) {
             this.$router.push({
               name: 'error',
-              params: { error: 'request timeout', url: this.src },
+              params: { error: 'request timeout', url: this.src, code: 408 },
               query: this.$route.query,
             });
           }
@@ -315,12 +279,33 @@ export default {
   }
 
   [dir=rtl] {
+    [class="col"],
+    [class^="col-xs-"],
+    [class^="col-sm-"],
+    [class^="col-md-"],
+    [class^="col-lg-"] {
+      float: right !important;
+    }
+
     .choices__input {
       text-align: right;
     }
 
-    .input-group-addon:last-child {
-      border-color: #ccc;
+    .formio-component .input-group-addon:last-child {
+      border-left-style: solid;
+      border-left-width: 1px;
+      border-right: 0;
+      border-radius: 4px;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    .formio-component:not(.has-error) .input-group-addon {
+      border-left-color: #ccc;
+    }
+
+    .formio-component-file .list-group {
+      padding-right: 0;
     }
 
     .formio-component-select .choices__list,
@@ -333,15 +318,6 @@ export default {
 @media only screen and (max-width: 600px) {
 
   .app-formview {
-
-    [dir=rtl] {
-      .has-feedback .form-control {
-        padding-left: inherit;
-        text-align: right;
-        overflow: hidden;
-      }
-    }
-
     label {
       float: none !important;
       width: 100% !important;
@@ -352,9 +328,36 @@ export default {
       padding-top: 5px;
       padding-bottom: 5px;
 
-      > input, > div {
+      > .form-control, > .form-group, > .input-group, > div[style*="width:"] {
         width: 100% !important;
         margin: 0 !important;
+      }
+    }
+
+    .formio-component-button {
+
+      > button {
+        display: block;
+        width: 100%;
+        margin-bottom: 8px;
+      }
+    }
+
+    [dir=ltr] {
+      label {
+        text-align: left !important;
+      }
+    }
+
+    [dir=rtl] {
+      label {
+        text-align: right !important;
+      }
+
+      .has-feedback .form-control {
+        padding-left: inherit;
+        text-align: right;
+        overflow: hidden;
       }
     }
   }
