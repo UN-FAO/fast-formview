@@ -1,0 +1,26 @@
+{
+  "ar": {
+    "title": "اقتراح غير جيد",
+    "body": "النموذج المطلوب غير موجود."
+  },
+  "en": {
+    "title": "Bad request",
+    "body": "The requested form does not exists."
+  },
+  "es": {
+    "title": "Solicitud incorrecta",
+    "body": "El formulario solicitado no existe."
+  },
+  "fr": {
+    "title": "Mauvaise demande",
+    "body": "Le formulaire demandé n'existe pas."
+  },
+  "ru": {
+    "title": "Плохой запрос",
+    "body": "Запрошенная форма не существует."
+  },
+  "zn": {
+    "title": "错误的请求",
+    "body": "请求的表单不存在。"
+  }
+}
