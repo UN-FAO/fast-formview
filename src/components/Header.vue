@@ -45,7 +45,7 @@ $logo-size: $logo-width $logo-height;
     padding: 0;
     left: 50%;
     top: ($header-height - $logo-height) / 2;
-    margin-left: -($logo-width / 2) !important;
+    margin-left: -($logo-width / 2);
     width: $logo-width;
     height: $logo-height;
     background-size: $logo-size;
@@ -71,6 +71,16 @@ $logo-size: $logo-width $logo-height;
     &.ar {
       background-image: url('/static/img/FAO_logo_ar.svg');
     }
+  }
+}
+
+@media only screen and (max-width: 350px) {
+  .navbar-brand {
+    top: 22px !important;
+    margin-left: -146px !important;
+    width: 293px !important;
+    height: 56px !important;
+    background-size: 293px 56px !important;
   }
 }
 </style>

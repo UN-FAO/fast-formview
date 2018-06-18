@@ -332,6 +332,10 @@ export default {
         width: 100% !important;
         margin: 0 !important;
       }
+
+      .formio-choices .form-control {
+        overflow-y: hidden;
+      }
     }
 
     .formio-component-button {
