@@ -8,7 +8,6 @@ import messages from './messages';
 
 Vue.config.productionTip = false;
 
-Vue.prototype.$formio = window.Formio;
 Vue.prototype.$resources = resources;
 Vue.prototype.$messages = messages;
 
