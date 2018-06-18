@@ -1,6 +1,6 @@
 {
   "name": "fast-formview",
-  "version": "2.0.3",
+  "version": "2.1.0",
   "description": "FAST Form View Application",
   "author": "Alfredo Irarrazaval",
   "private": true,
@@ -14,11 +14,9 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "bootstrap-rtl-ondemand": "^3.3.4",
     "formiojs": "^2.32.2",
     "lodash": "^4.17.10",
     "vue": "^2.5.2",
-    "vue-formio": "^1.0.1",
     "vue-router": "^3.0.1"
   },
   "devDependencies": {
@@ -62,6 +60,7 @@
     "karma-sourcemap-loader": "^0.3.7",
     "karma-spec-reporter": "0.0.31",
     "karma-webpack": "^2.0.2",
+    "less-loader": "^4.1.0",
     "mocha": "^3.2.0",
     "nightwatch": "^0.9.12",
     "node-notifier": "^5.1.2",
