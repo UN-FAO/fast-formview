@@ -69,6 +69,7 @@ export default {
     setLanguage(code, event) {
       const language = _clone(this.findLanguage(code));
       if (language && !_isEmpty(this.form)) {
+        this.deleteFlatpickrs();
         this.form.language = language.code;
         this.previousLanguage = _clone(this.currentLanguage);
         this.currentLanguage = language;
@@ -124,6 +125,13 @@ export default {
           }
         });
       }
+    },
+    deleteFlatpickrs() {
+      _forEach(document.getElementsByClassName('flatpickr-calendar'), (el) => {
+        if (typeof el === 'object' && el.nodeType === 1) {
+          el.parentNode.removeChild(el);
+        }
+      });
     },
   },
   created() {
