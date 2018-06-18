@@ -1,7 +1,7 @@
 <template>
   <section class="app-error">
     <app-header></app-header>
-    <div class="container" :class="type">
+    <div class="container" :class="errorClass">
       <div class="error-wrapper">
         <span class="error-message" v-for="(message, lang) in messages" :key="lang">
           <h1 :dir="getDirection(lang)">{{ message.title }}</h1>
@@ -25,19 +25,30 @@ export default {
   components: {
     'app-header': HeaderComponent,
   },
-  props: ['error', 'path', 'url', 'type'],
+  props: ['error', 'path', 'url', 'code'],
   data() {
     return {
       messages: {},
+      errorClass: '',
     };
   },
   mounted() {
-    switch (this.type) {
-      case 'unauthorized':
+    switch (this.code) {
+      case 400:
+        this.messages = ErrorMessages.badRequest;
+        this.errorClass = 'error-400';
+        break;
+      case 401:
         this.messages = ErrorMessages.unauthorized;
+        this.errorClass = 'error-401';
+        break;
+      case 408:
+        this.messages = ErrorMessages.timeout;
+        this.errorClass = 'error-408';
         break;
       default:
         this.messages = ErrorMessages.notFound;
+        this.errorClass = 'error-404';
     }
 
     /* eslint-disable no-console */
@@ -80,8 +91,16 @@ export default {
       content: '404';
     }
 
-    &.unauthorized::before {
+    &.error-400::before {
+      content: '400';
+    }
+
+    &.error-401::before {
       content: '401';
+    }
+
+    &.error-408::before {
+      content: '408';
     }
 
     .error-wrapper {
