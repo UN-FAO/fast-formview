@@ -14,7 +14,7 @@ export default {
 // import formio styles
 @import 'formiojs/dist/formio.full.min.css';
 // import bootstrap ltr|rtl support
-@import 'bootstrap-rtl-ondemand/dist/css/bootstrap-rtl.min.css';
+// @import 'bootstrap-rtl-ondemand/less/bootstrap-rtl.less';
 // import fonts
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700');
 
