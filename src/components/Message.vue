@@ -6,9 +6,7 @@
       </div>
       <div class="message-body" v-if="message.body">
         <hr />
-        <p>
-          {{ message.body }}
-        </p>
+        <div v-html="message.body"></div>
       </div>
     </div>
   </section>
