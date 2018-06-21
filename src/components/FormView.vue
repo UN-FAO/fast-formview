@@ -266,10 +266,6 @@ export default {
 <style lang="scss">
 .app-formview {
 
-  .container {
-    overflow-y: hidden;
-  }
-
   .formio-form {
     > div {
       > .alert-danger:first-child {

@@ -33,5 +33,8 @@ export default {
 
 <style lang="scss" scoped>
 .app-message {
+  > .well {
+    border-radius: 0;
+  }
 }
 </style>
