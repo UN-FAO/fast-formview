@@ -79,7 +79,13 @@ export default {
   },
   computed: {
     src() {
-      return this.encodedUrl ? atob(this.encodedUrl) : `https://${this.machine}.form.io/${this.formPath}`;
+      return this.encodedUrl ? atob(this.encodedUrl) : `https://${this.machine}.form.io/${this.formPath}${this.query}`;
+    },
+    token() {
+      return this.$route.query['x-jwt-token'] || '';
+    },
+    query() {
+      return this.token ? `?x-jwt-token=${this.token}` : '';
     },
     projectUrl() {
       return (new Formio(this.src)).projectUrl;
