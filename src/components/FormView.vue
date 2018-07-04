@@ -270,12 +270,34 @@ export default {
 </script>
 
 <style lang="scss">
+
 .app-formview {
 
   .formio-form {
     > div {
       > .alert-danger:first-child {
         display: none !important;
+      }
+    }
+
+    .formio-choices[data-type="select-multiple"] {
+
+      > .form-control {
+        height: auto !important;
+
+        > .choices__list--multiple {
+
+          > .choices__item {
+            margin-bottom: 0 !important;
+          }
+        }
+
+        > input {
+          margin-bottom: 0 !important;
+          width: 250px !important;
+          padding: 0;
+          background-color: transparent;
+        }
       }
     }
   }
@@ -337,6 +359,10 @@ export default {
 
       .formio-choices .form-control {
         overflow-y: hidden;
+
+        > input {
+          width: 100% !important;
+        }
       }
     }
 
