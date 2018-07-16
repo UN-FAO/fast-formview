@@ -71,6 +71,7 @@ export default {
       if (language && !_isEmpty(this.form)) {
         this.deleteFlatpickrs();
         this.form.language = language.code;
+        this.form.render();
         this.previousLanguage = _clone(this.currentLanguage);
         this.currentLanguage = language;
         this.updateDirection();
