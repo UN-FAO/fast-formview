@@ -14,8 +14,9 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "formiojs": "^2.32.2",
+    "formiojs": "^2.32.3",
     "lodash": "^4.17.10",
+    "moment": "^2.22.2",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1"
   },
